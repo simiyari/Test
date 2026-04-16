@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>گیم‌پلاس | بازی آنلاین با اینترنت ملی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -22,18 +24,28 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+body{font-family:'Vazirmatn',system-ui,-apple-system,sans-serif;background:var(--bg);
+  color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;right:0;bottom:0;left:0;
+  background-image:linear-gradient(rgba(0,212,255,.02) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(0,212,255,.02) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
 
 /* ─── NAV ─── */
-.nav{position:sticky;top:0;z-index:200;background:rgba(6,11,20,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(–border2)}
+.nav{position:-webkit-sticky;position:sticky;top:0;z-index:200;
+background:rgba(6,11,20,.95);
+-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+border-bottom:1px solid var(–border2)}
 .nav-inner{max-width:1240px;margin:auto;display:flex;align-items:center;gap:0;padding:0 20px;height:58px}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit;margin-left:28px;flex-shrink:0}
 .logo-i{font-size:22px}
 .logo-t{font-size:18px;font-weight:900;color:var(–tb)}
 .logo-t span{color:var(–accent)}
 .nav-tabs{display:flex;gap:2px;flex:1}
-.ntab{padding:8px 16px;border:none;background:transparent;color:var(–tm);font-family:‘Vazirmatn’,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:8px;transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.ntab{padding:8px 16px;border:none;background:transparent;color:var(–tm);
+font-family:‘Vazirmatn’,system-ui,sans-serif;font-size:13.5px;font-weight:600;
+cursor:pointer;border-radius:8px;transition:.2s;white-space:nowrap;
+display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent}
 .ntab:hover{color:var(–text);background:var(–border2)}
 .ntab.active{color:var(–accent);background:var(–ad)}
 
@@ -87,21 +99,35 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .no-results{grid-column:1/-1;text-align:center;padding:48px;color:var(–tm)}
 
 /* ─── MODAL ─── */
-.mo{position:fixed;inset:0;background:rgba(2,5,10,.82);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
+.mo{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(2,5,10,.82);
+-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
 .mo.open{display:flex}
-.mbox{background:var(–bg2);border:1.5px solid var(–border);border-radius:20px;width:100%;max-width:700px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.8);animation:mup .28s cubic-bezier(.34,1.4,.64,1)}
+.mbox{background:var(–bg2);border:1.5px solid var(–border);border-radius:20px;width:100%;
+max-width:700px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;
+box-shadow:0 32px 80px rgba(0,0,0,.8);animation:mup .28s cubic-bezier(.34,1.4,.64,1)}
 @keyframes mup{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
 .mhdr{padding:20px 20px 0;position:relative}
-.mclose{position:absolute;top:16px;left:16px;background:var(–bg3);border:1.5px solid var(–border2);color:var(–tm);width:32px;height:32px;border-radius:50%;font-size:15px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+.mclose{position:absolute;top:16px;left:16px;background:var(–bg3);border:1.5px solid var(–border2);
+color:var(–tm);width:32px;height:32px;border-radius:50%;font-size:15px;cursor:pointer;
+transition:.2s;display:flex;align-items:center;justify-content:center}
 .mclose:hover{color:var(–red);border-color:var(–red)}
-.mcat{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:3px 10px;border-radius:12px;margin-bottom:8px;letter-spacing:.02em}
+.mcat{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;
+padding:3px 10px;border-radius:12px;margin-bottom:8px;letter-spacing:.02em}
 .mtitle{font-size:20px;font-weight:900;color:var(–tb);margin-bottom:5px}
 .mdesc{font-size:13px;color:var(–tm);line-height:1.6;margin-bottom:2px}
-.mtabs{display:flex;gap:3px;padding:14px 20px 0;border-bottom:1px solid var(–border2);flex-wrap:wrap;overflow-x:auto}
-.mtab{padding:8px 14px;background:transparent;border:none;color:var(–tm);font-family:‘Vazirmatn’,sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:.2s;border-radius:8px 8px 0 0;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.mtabs{display:flex;gap:3px;padding:14px 20px 0;border-bottom:1px solid var(–border2);
+flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.mtabs::-webkit-scrollbar{display:none}
+.mtab{padding:8px 14px;background:transparent;border:none;color:var(–tm);
+font-family:‘Vazirmatn’,system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer;
+border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:.2s;
+border-radius:8px 8px 0 0;white-space:nowrap;display:flex;align-items:center;gap:5px;
+-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .mtab:hover{color:var(–text);background:var(–ad)}
 .mtab.active{color:var(–accent);border-bottom-color:var(–accent)}
-.mbody{overflow-y:auto;padding:20px;flex:1;min-height:0}
+.mbody{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px;flex:1;min-height:0;
+overscroll-behavior:contain}
 .mbody::-webkit-scrollbar{width:4px}
 .mbody::-webkit-scrollbar-thumb{background:var(–border);border-radius:4px}
 .tc{display:none}
@@ -205,13 +231,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* ══ MOBILE BOTTOM NAV ══ */
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
-background:rgba(6,11,20,.97);backdrop-filter:blur(24px);
+background:rgba(6,11,20,.97);
+-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);
 border-top:1px solid var(–border2);
-padding:0 0 env(safe-area-inset-bottom,0);
+padding-bottom:0;padding-bottom:constant(safe-area-inset-bottom);
+padding-bottom:env(safe-area-inset-bottom);
 }
 .bnav-inner{display:flex;height:60px}
 .bntab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-background:transparent;border:none;color:var(–tm);font-family:‘Vazirmatn’,sans-serif;
+background:transparent;border:none;color:var(–tm);
+font-family:‘Vazirmatn’,system-ui,sans-serif;
 font-size:10px;font-weight:600;cursor:pointer;transition:.2s;padding:8px 4px;
 -webkit-tap-highlight-color:transparent;
 }
@@ -238,8 +267,8 @@ font-size:10px;font-weight:600;cursor:pointer;transition:.2s;padding:8px 4px;
 .nav-tabs{display:none}
 .logo{margin-left:0}
 
-/* Page padding: top tight, bottom for nav bar */
-.page{padding:16px 14px calc(72px + env(safe-area-inset-bottom,0)) 14px}
+/* Page padding: safe bottom for nav bar */
+.page{padding:16px 14px 80px 14px}
 
 /* Section headers */
 .sh{margin-bottom:16px}
@@ -251,8 +280,8 @@ font-size:10px;font-weight:600;cursor:pointer;transition:.2s;padding:8px 4px;
 .search-bar input{padding:11px 40px 11px 14px;font-size:13.5px}
 
 /* Categories: horizontal scroll, no wrap */
-.cats{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;
-scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:6px}
+.cats{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;gap:6px}
 .cats::-webkit-scrollbar{display:none}
 .cb{flex-shrink:0;padding:6px 13px;font-size:12px}
 
@@ -281,9 +310,14 @@ scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:6px}
 
 /* Modal → bottom sheet */
 .mo{padding:0;align-items:flex-end}
-.mbox{max-width:100%;border-radius:22px 22px 0 0;border-left:none;border-right:none;border-bottom:none;
-max-height:92vh;animation:mslide .3s cubic-bezier(.32,1.2,.64,1)}
-@keyframes mslide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mbox{
+max-width:100%;
+border-radius:22px 22px 0 0;
+border-left:none;border-right:none;border-bottom:none;
+max-height:92vh;max-height:92svh;
+animation:mslide .3s cubic-bezier(.32,1.2,.64,1);
+}
+@keyframes mslide{from{transform:translateY(100%);opacity:.6}to{transform:translateY(0);opacity:1}}
 .m-handle{display:block}
 .mhdr{padding:4px 16px 0}
 .mcat{margin-bottom:6px}
@@ -292,8 +326,47 @@ max-height:92vh;animation:mslide .3s cubic-bezier(.32,1.2,.64,1)}
 .mtabs{padding:10px 16px 0;gap:2px;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
 .mtabs::-webkit-scrollbar{display:none}
 .mtab{font-size:12px;padding:7px 11px;flex-shrink:0}
-.mbody{padding:14px 16px}
+/* KEY FIX: modal body scroll on iOS */
+.mbody{
+padding:14px 16px 32px;
+overflow-y:scroll !important;
+-webkit-overflow-scrolling:touch;
+overscroll-behavior:contain;
+}
 .mclose{top:14px;left:14px;width:30px;height:30px;font-size:14px}
+
+/* Download items */
+.ditem{flex-wrap:wrap;gap:8px}
+.dbtn{font-size:11.5px;padding:6px 11px}
+
+/* Install steps */
+.istep{gap:10px}
+.isn{min-width:24px;height:24px;font-size:11px}
+.islabel{font-size:12.5px}
+.istext{font-size:12px}
+.icode{font-size:11px;padding:6px 10px}
+
+/* Connection steps */
+.cstep{font-size:12px}
+.ccode{font-size:11px}
+.ctbadge{font-size:12px;padding:5px 11px}
+
+/* Bale card */
+.bcard{padding:13px 14px}
+.bbtn{padding:9px 15px;font-size:12.5px}
+
+/* Tool cards */
+.tcard{padding:16px}
+.tcname{font-size:14px}
+.tcdesc{font-size:12px}
+.tclink{font-size:12px;padding:7px 12px}
+
+/* TS cards */
+.tscard{padding:14px 16px}
+.copybtn{width:100%;justify-content:center;padding:9px}
+
+.no-results{padding:32px 16px;font-size:13px}
+}
 
 /* Download items */
 .ditem{flex-wrap:wrap;gap:8px}
@@ -1202,37 +1275,39 @@ function cp(addr,btn){
 renderGames(); renderTools(); renderSites(); renderTS();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-// ── SWIPE TO CLOSE MODAL (mobile) ──
+// ── SWIPE TO CLOSE MODAL — handle only, never blocks content scroll ──
 (function(){
-  const handle=document.getElementById('mhandle');
-  const mbox=document.getElementById('mbox');
-  let sy=0,dy=0,dragging=false;
-  function onStart(e){
-    const t=e.touches?e.touches[0]:e;
-    sy=t.clientY;dy=0;dragging=true;
-    mbox.style.transition='none';
-  }
-  function onMove(e){
-    if(!dragging)return;
-    const t=e.touches?e.touches[0]:e;
-    dy=Math.max(0,t.clientY-sy);
-    mbox.style.transform=`translateY(${dy}px)`;
-    if(dy>10)e.preventDefault();
-  }
-  function onEnd(){
-    if(!dragging)return;
-    dragging=false;
-    mbox.style.transition='';
-    if(dy>80){closeModal();}
-    else{mbox.style.transform='';}
-    dy=0;
-  }
-  // Attach to handle and modal header
-  [handle,document.getElementById('mbox')].forEach(el=>{
-    if(!el)return;
-    el.addEventListener('touchstart',onStart,{passive:true});
-    el.addEventListener('touchmove',onMove,{passive:false});
-    el.addEventListener('touchend',onEnd);
+  const handle = document.getElementById('mhandle');
+  const mbox   = document.getElementById('mbox');
+  if(!handle || !mbox) return;
+
+  let startY = 0, currentDY = 0, active = false;
+
+  handle.addEventListener('touchstart', function(e){
+    startY    = e.touches[0].clientY;
+    currentDY = 0;
+    active    = true;
+    mbox.style.transition = 'none';
+  }, {passive: true});
+
+  handle.addEventListener('touchmove', function(e){
+    if(!active) return;
+    currentDY = Math.max(0, e.touches[0].clientY - startY);
+    mbox.style.transform = 'translateY(' + currentDY + 'px)';
+    // Only prevent default on the handle drag itself
+    e.preventDefault();
+  }, {passive: false});
+
+  handle.addEventListener('touchend', function(){
+    if(!active) return;
+    active = false;
+    mbox.style.transition = '';
+    if(currentDY > 90){
+      closeModal();
+    } else {
+      mbox.style.transform = '';
+    }
+    currentDY = 0;
   });
 })();
 
