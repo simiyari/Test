@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>گیم‌پلاس | بازی آنلاین با اینترنت ملی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060b14; --bg2:#0d1725; --bg3:#131f33; --bg4:#1c2b44;
+  --accent:#00d4ff; --ag:rgba(0,212,255,.18); --ad:rgba(0,212,255,.08);
+  --orange:#ff6535; --od:rgba(255,101,53,.1);
+  --green:#22d37e; --gd:rgba(34,211,126,.1);
+  --purple:#b06cf8; --pd:rgba(176,108,248,.1);
+  --yellow:#f4c842; --yd:rgba(244,200,66,.1);
+  --red:#ff4757; --rd:rgba(255,71,87,.1);
+  --teal:#2dd4bf; --td:rgba(45,212,191,.1);
+  --text:#c0cedf; --tm:#4e6480; --tb:#eaf0fb;
+  --border:rgba(0,212,255,.1); --border2:rgba(255,255,255,.05);
+  --r:10px; --rl:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+/* ─── NAV ─── */
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,11,20,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(–border2)}
+.nav-inner{max-width:1240px;margin:auto;display:flex;align-items:center;gap:0;padding:0 20px;height:58px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit;margin-left:28px;flex-shrink:0}
+.logo-i{font-size:22px}
+.logo-t{font-size:18px;font-weight:900;color:var(–tb)}
+.logo-t span{color:var(–accent)}
+.nav-tabs{display:flex;gap:2px;flex:1}
+.ntab{padding:8px 16px;border:none;background:transparent;color:var(–tm);font-family:‘Vazirmatn’,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:8px;transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.ntab:hover{color:var(–text);background:var(–border2)}
+.ntab.active{color:var(–accent);background:var(–ad)}
+
+/* ─── PAGES ─── */
+.page{display:none;max-width:1240px;margin:0 auto;padding:28px 20px 60px}
+.page.active{display:block}
+
+/* ─── SECTION HEAD ─── */
+.sh{margin-bottom:24px}
+.sh-row{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.sh-title{font-size:20px;font-weight:900;color:var(–tb)}
+.sh-count{font-size:12px;font-weight:700;background:var(–ad);color:var(–accent);padding:2px 8px;border-radius:10px}
+.sh-sub{font-size:13px;color:var(–tm)}
+
+/* ─── SEARCH ─── */
+.search-bar{position:relative;margin-bottom:18px}
+.search-bar input{width:100%;padding:12px 44px 12px 16px;background:var(–bg2);border:1.5px solid var(–border2);border-radius:10px;color:var(–tb);font-family:‘Vazirmatn’,sans-serif;font-size:14px;outline:none;transition:.2s}
+.search-bar input:focus{border-color:var(–accent);box-shadow:0 0 0 3px var(–ad)}
+.search-bar input::placeholder{color:var(–tm)}
+.search-bar .si{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:17px;opacity:.4;pointer-events:none}
+
+/* ─── CATEGORY FILTER ─── */
+.cats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.cb{padding:6px 14px;border-radius:20px;border:1.5px solid var(–border2);background:var(–bg2);color:var(–tm);font-family:‘Vazirmatn’,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap}
+.cb:hover,.cb.active{border-color:var(–accent);color:var(–accent);background:var(–ad)}
+
+/* ─── GAME CARDS GRID ─── */
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;align-items:stretch}
+.gc{background:var(–bg2);border:1.5px solid var(–border2);border-radius:var(–rl);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:.25s;position:relative}
+.gc:hover{border-color:var(–cat-c,var(–accent));transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+
+/* card header */
+.gc-head{padding:20px 18px 16px;background:linear-gradient(135deg, var(–cat-bg,rgba(0,212,255,.06)) 0%, transparent 100%);border-bottom:1px solid var(–border2);position:relative}
+.gc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.gc-icon{font-size:30px;line-height:1}
+.gc-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;background:var(–cat-bg,var(–ad));color:var(–cat-c,var(–accent));border:1px solid var(–cat-c,var(–accent));opacity:.9}
+.gc-name{font-size:15px;font-weight:800;color:var(–tb);line-height:1.3}
+.gc-dot{position:absolute;top:12px;left:14px;width:7px;height:7px;border-radius:50%;background:var(–green);box-shadow:0 0 6px var(–green);display:none}
+.gc.hasdata .gc-dot{display:block}
+
+/* card body */
+.gc-body{padding:12px 18px;flex:1}
+.gc-desc{font-size:12.5px;color:var(–tm);line-height:1.65}
+
+/* card footer */
+.gc-foot{padding:12px 18px;border-top:1px solid var(–border2);display:flex;gap:8px;align-items:center}
+.gc-btn{flex:1;padding:8px 0;background:var(–cat-c,var(–accent));color:#04080f;font-family:‘Vazirmatn’,sans-serif;font-size:13px;font-weight:800;border:none;border-radius:8px;cursor:pointer;transition:.15s;text-align:center}
+.gc-btn:hover{filter:brightness(1.1)}
+.gc-bale{padding:8px 11px;background:var(–bg3);border:1.5px solid var(–border2);color:var(–tm);font-family:‘Vazirmatn’,sans-serif;font-size:12px;border-radius:8px;cursor:pointer;text-decoration:none;transition:.15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.gc-bale:hover{border-color:var(–orange);color:var(–orange)}
+.no-results{grid-column:1/-1;text-align:center;padding:48px;color:var(–tm)}
+
+/* ─── MODAL ─── */
+.mo{position:fixed;inset:0;background:rgba(2,5,10,.82);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
+.mo.open{display:flex}
+.mbox{background:var(–bg2);border:1.5px solid var(–border);border-radius:20px;width:100%;max-width:700px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.8);animation:mup .28s cubic-bezier(.34,1.4,.64,1)}
+@keyframes mup{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.mhdr{padding:20px 20px 0;position:relative}
+.mclose{position:absolute;top:16px;left:16px;background:var(–bg3);border:1.5px solid var(–border2);color:var(–tm);width:32px;height:32px;border-radius:50%;font-size:15px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+.mclose:hover{color:var(–red);border-color:var(–red)}
+.mcat{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:3px 10px;border-radius:12px;margin-bottom:8px;letter-spacing:.02em}
+.mtitle{font-size:20px;font-weight:900;color:var(–tb);margin-bottom:5px}
+.mdesc{font-size:13px;color:var(–tm);line-height:1.6;margin-bottom:2px}
+.mtabs{display:flex;gap:3px;padding:14px 20px 0;border-bottom:1px solid var(–border2);flex-wrap:wrap;overflow-x:auto}
+.mtab{padding:8px 14px;background:transparent;border:none;color:var(–tm);font-family:‘Vazirmatn’,sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:.2s;border-radius:8px 8px 0 0;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.mtab:hover{color:var(–text);background:var(–ad)}
+.mtab.active{color:var(–accent);border-bottom-color:var(–accent)}
+.mbody{overflow-y:auto;padding:20px;flex:1;min-height:0}
+.mbody::-webkit-scrollbar{width:4px}
+.mbody::-webkit-scrollbar-thumb{background:var(–border);border-radius:4px}
+.tc{display:none}
+.tc.active{display:block}
+
+/* ─── TAB: BALE ─── */
+.bcard{background:var(–bg3);border:1.5px solid var(–border2);border-radius:var(–r);padding:16px 18px;margin-bottom:12px}
+.bcard h4{font-size:14px;font-weight:700;color:var(–tb);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.brow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bbtn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:var(–orange);color:#fff;text-decoration:none;border-radius:8px;font-family:‘Vazirmatn’,sans-serif;font-size:13px;font-weight:700;transition:.15s}
+.bbtn:hover{filter:brightness(1.12)}
+.buser{font-size:12.5px;color:var(–tm)}
+.buser b{color:var(–accent)}
+
+/* ─── TAB: DOWNLOAD ─── */
+.dlg{margin-bottom:20px}
+.dglabel{font-size:12px;font-weight:800;color:var(–tm);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ditem{background:var(–bg3);border:1.5px solid var(–border2);border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:.15s}
+.ditem:hover{border-color:var(–border);background:var(–bg4)}
+.dinfo{flex:1;min-width:0}
+.dname{font-size:13px;font-weight:600;color:var(–tb);margin-bottom:2px}
+.dnote{font-size:11.5px;color:var(–tm)}
+.dbtn{padding:7px 13px;border-radius:7px;font-family:‘Vazirmatn’,sans-serif;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;transition:.15s;border:none;cursor:pointer}
+.dbtn.game{background:var(–accent);color:#040c14}
+.dbtn.tool{background:var(–orange);color:#fff}
+.dbtn.dlc{background:var(–purple);color:#fff}
+.dbtn.mod{background:var(–green);color:#040c14}
+.dbtn:hover{filter:brightness(1.1)}
+.nodl{background:var(–bg3);border:1.5px dashed var(–border2);border-radius:var(–r);padding:18px;text-align:center;color:var(–tm);font-size:13px}
+
+/* ─── TAB: INSTALL ─── */
+.isteps{list-style:none}
+.istep{display:flex;gap:13px;margin-bottom:15px;align-items:flex-start}
+.isn{min-width:28px;height:28px;border-radius:50%;background:var(–ad);border:1.5px solid var(–accent);color:var(–accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.isb{flex:1}
+.islabel{font-size:13px;font-weight:800;color:var(–tb);margin-bottom:3px}
+.istext{font-size:12.5px;color:var(–tm);line-height:1.7;white-space:pre-line}
+.icode{display:block;background:var(–bg);border:1px solid var(–border);border-radius:6px;padding:8px 12px;font-family:monospace;font-size:12px;color:var(–accent);direction:ltr;text-align:left;margin-top:5px;word-break:break-all;line-height:1.6}
+.inote{background:var(–yd);border:1.5px solid rgba(244,200,66,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(–tm);line-height:1.7;margin-bottom:14px}
+.inote b{color:var(–yellow)}
+
+/* ─── TAB: CONNECTION ─── */
+.ctools{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.ctbadge{padding:5px 12px;border-radius:20px;font-size:12.5px;font-weight:700;background:var(–ad);color:var(–accent);border:1.5px solid var(–border);cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.ctbadge:hover{background:var(–accent);color:#040c14}
+.cmode{margin-bottom:18px}
+.cmode-title{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(–tb);padding:7px 12px;border-radius:8px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.cmode-title.host{background:var(–gd);color:var(–green)}
+.cmode-title.join{background:var(–pd);color:var(–purple)}
+.csteps{list-style:none}
+.cstep{display:flex;gap:10px;margin-bottom:10px;font-size:12.5px;color:var(–text);line-height:1.7;align-items:flex-start}
+.csn{min-width:20px;height:20px;border-radius:50%;background:var(–ad);color:var(–accent);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.ccode{display:block;background:var(–bg);border:1px solid var(–border);border-radius:6px;padding:7px 11px;font-family:monospace;font-size:11.5px;color:var(–accent);direction:ltr;text-align:left;margin-top:5px;word-break:break-all}
+.ctsbox{background:var(–bg3);border:1.5px solid var(–border);border-radius:8px;padding:13px 15px;margin-top:12px}
+.ctsbox h5{font-size:12.5px;font-weight:800;color:var(–tb);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ctsaddr{font-family:monospace;font-size:12px;color:var(–teal);direction:ltr;text-align:right;display:block;padding:3px 0;border-bottom:1px solid var(–border2)}
+.ctsaddr:last-child{border-bottom:none}
+.cwarn{background:var(–od);border:1.5px solid rgba(255,101,53,.2);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(–tm);line-height:1.7;margin-top:12px}
+.cwarn b{color:var(–orange)}
+.cvideo{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;background:var(–bg3);border:1.5px solid var(–border2);color:var(–text);border-radius:8px;font-family:‘Vazirmatn’,sans-serif;font-size:13px;text-decoration:none;transition:.2s;margin-top:10px}
+.cvideo:hover{border-color:var(–orange);color:var(–orange)}
+
+/* ─── TOOLS PAGE ─── */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;align-items:stretch}
+.tcard{background:var(–bg2);border:1.5px solid var(–border2);border-radius:var(–rl);padding:20px;display:flex;flex-direction:column;transition:.25s}
+.tcard:hover{border-color:var(–accent)}
+.tcard.hl{animation:pulse .8s ease}
+@keyframes pulse{0%,100%{border-color:var(–border2)}50%{border-color:var(–accent);box-shadow:0 0 0 4px var(–ad)}}
+.tchead{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.tcicon{font-size:26px}
+.tcname{font-size:15px;font-weight:900;color:var(–tb)}
+.tctype{font-size:11px;font-weight:700;color:var(–accent);background:var(–ad);padding:2px 8px;border-radius:10px;display:inline-block;margin-top:2px}
+.tcdesc{font-size:12.5px;color:var(–tm);line-height:1.7;flex:1;margin-bottom:14px}
+.tclinks{display:flex;flex-wrap:wrap;gap:7px}
+.tclink{padding:8px 14px;border-radius:8px;font-family:‘Vazirmatn’,sans-serif;font-size:13px;font-weight:700;text-decoration:none;transition:.15s;display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(–border2);color:var(–text);background:var(–bg3)}
+.tclink.main{background:var(–accent);color:#040c14;border-color:var(–accent)}
+.tclink.main:hover{filter:brightness(1.1)}
+.tclink:not(.main):hover{border-color:var(–accent);color:var(–accent)}
+
+/* ─── SITES PAGE ─── */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.scard{background:var(–bg2);border:1.5px solid var(–border2);border-radius:var(–r);padding:16px 18px;text-decoration:none;transition:.2s;display:flex;flex-direction:column;gap:4px}
+.scard:hover{border-color:var(–accent);transform:translateY(-2px)}
+.sname{font-size:14px;font-weight:800;color:var(–tb)}
+.surl{font-size:11.5px;color:var(–tm);direction:ltr;text-align:right}
+.stag{font-size:11px;font-weight:700;color:var(–accent);margin-top:4px}
+
+/* ─── TS PAGE ─── */
+.tsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.tscard{background:var(–bg2);border:1.5px solid var(–border2);border-radius:var(–r);padding:18px 20px}
+.tsname{font-size:14px;font-weight:800;color:var(–tb);margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tstag{font-size:11px;padding:2px 8px;border-radius:10px;background:var(–td);color:var(–teal);font-weight:700}
+.tsaddrs{list-style:none}
+.tsaddrs li{font-family:monospace;font-size:12px;color:var(–tm);padding:5px 0;border-bottom:1px solid var(–border2);direction:ltr;text-align:right}
+.tsaddrs li:last-child{border-bottom:none}
+.copybtn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(–bg3);border:1.5px solid var(–border2);border-radius:7px;font-family:‘Vazirmatn’,sans-serif;font-size:12px;color:var(–tm);cursor:pointer;transition:.15s;margin-top:10px}
+.copybtn:hover{color:var(–teal);border-color:var(–teal)}
+
+/* ─── DIVIDER ─── */
+.div{height:1px;background:var(–border2);margin:16px 0}
+
+/* ══ MOBILE BOTTOM NAV ══ */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
+background:rgba(6,11,20,.97);backdrop-filter:blur(24px);
+border-top:1px solid var(–border2);
+padding:0 0 env(safe-area-inset-bottom,0);
+}
+.bnav-inner{display:flex;height:60px}
+.bntab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+background:transparent;border:none;color:var(–tm);font-family:‘Vazirmatn’,sans-serif;
+font-size:10px;font-weight:600;cursor:pointer;transition:.2s;padding:8px 4px;
+-webkit-tap-highlight-color:transparent;
+}
+.bntab .bni{font-size:20px;line-height:1;transition:.2s}
+.bntab.active{color:var(–accent)}
+.bntab.active .bni{filter:drop-shadow(0 0 6px var(–accent))}
+.bntab:active{background:var(–ad)}
+
+/* ══ MODAL DRAG HANDLE ══ */
+.m-handle{display:none;width:36px;height:4px;background:var(–border);border-radius:2px;margin:10px auto 0}
+
+/* ══ RESPONSIVE BREAKPOINTS ══ */
+
+/* ── Tablet (≤ 900px) ── */
+@media(max-width:900px){
+.gg{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.tgrid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media(max-width:768px){
+/* Show bottom nav, hide top nav tabs */
+.bnav{display:block}
+.nav-tabs{display:none}
+.logo{margin-left:0}
+
+/* Page padding: top tight, bottom for nav bar */
+.page{padding:16px 14px calc(72px + env(safe-area-inset-bottom,0)) 14px}
+
+/* Section headers */
+.sh{margin-bottom:16px}
+.sh-title{font-size:17px}
+.sh-sub{font-size:12px}
+
+/* Search */
+.search-bar{margin-bottom:14px}
+.search-bar input{padding:11px 40px 11px 14px;font-size:13.5px}
+
+/* Categories: horizontal scroll, no wrap */
+.cats{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;
+scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:6px}
+.cats::-webkit-scrollbar{display:none}
+.cb{flex-shrink:0;padding:6px 13px;font-size:12px}
+
+/* Game grid: 2 columns */
+.gg{grid-template-columns:repeat(2,1fr);gap:10px}
+.gc-head{padding:14px 13px 12px}
+.gc-icon{font-size:24px}
+.gc-name{font-size:13px}
+.gc-badge{font-size:10px;padding:2px 7px}
+.gc-body{padding:9px 13px}
+.gc-desc{font-size:11.5px}
+.gc-foot{padding:9px 13px;gap:6px}
+.gc-btn{font-size:12px;padding:7px 0}
+.gc-bale{font-size:11px;padding:7px 9px}
+
+/* Tools grid */
+.tgrid{grid-template-columns:1fr}
+
+/* Sites grid */
+.sgrid{grid-template-columns:repeat(2,1fr);gap:10px}
+.scard{padding:13px 14px}
+.sname{font-size:13px}
+
+/* TS grid */
+.tsgrid{grid-template-columns:1fr}
+
+/* Modal → bottom sheet */
+.mo{padding:0;align-items:flex-end}
+.mbox{max-width:100%;border-radius:22px 22px 0 0;border-left:none;border-right:none;border-bottom:none;
+max-height:92vh;animation:mslide .3s cubic-bezier(.32,1.2,.64,1)}
+@keyframes mslide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.m-handle{display:block}
+.mhdr{padding:4px 16px 0}
+.mcat{margin-bottom:6px}
+.mtitle{font-size:17px}
+.mdesc{font-size:12px}
+.mtabs{padding:10px 16px 0;gap:2px;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+.mtabs::-webkit-scrollbar{display:none}
+.mtab{font-size:12px;padding:7px 11px;flex-shrink:0}
+.mbody{padding:14px 16px}
+.mclose{top:14px;left:14px;width:30px;height:30px;font-size:14px}
+
+/* Download items */
+.ditem{flex-wrap:wrap;gap:8px}
+.dbtn{font-size:11.5px;padding:6px 11px}
+
+/* Install steps */
+.istep{gap:10px}
+.isn{min-width:24px;height:24px;font-size:11px}
+.islabel{font-size:12.5px}
+.istext{font-size:12px}
+.icode{font-size:11px;padding:6px 10px}
+
+/* Connection steps */
+.cstep{font-size:12px}
+.ccode{font-size:11px}
+.ctbadge{font-size:12px;padding:5px 11px}
+
+/* Bale card */
+.bcard{padding:13px 14px}
+.bbtn{padding:9px 15px;font-size:12.5px}
+
+/* Tool cards */
+.tcard{padding:16px}
+.tcname{font-size:14px}
+.tcdesc{font-size:12px}
+.tclink{font-size:12px;padding:7px 12px}
+
+/* TS cards */
+.tscard{padding:14px 16px}
+.copybtn{width:100%;justify-content:center;padding:9px}
+
+/* No results */
+.no-results{padding:32px 16px;font-size:13px}
+}
+
+/* ── Small mobile (≤ 390px) ── */
+@media(max-width:390px){
+.gg{grid-template-columns:1fr}
+.gc-head{padding:16px 14px 13px}
+.gc-icon{font-size:28px}
+.gc-name{font-size:14px}
+.gc-body{padding:10px 14px}
+.gc-desc{font-size:12.5px}
+.gc-foot{padding:10px 14px}
+.gc-btn{font-size:13px}
+.sgrid{grid-template-columns:1fr}
+}
+
+/* ── Landscape mobile ── */
+@media(max-width:768px) and (orientation:landscape){
+.bnav-inner{height:50px}
+.bntab .bni{font-size:18px}
+.bntab{font-size:9px}
+.mbox{max-height:96vh}
+}
+
+/* ── Very large screens ── */
+@media(min-width:1400px){
+.gg{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+}
+</style>
+
+</head>
+<body>
+
+<!-- ── NAV ── -->
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#" onclick="showPage('games')">
+      <span class="logo-i">🕹️</span>
+      <span class="logo-t">گیم‌<span>پلاس</span></span>
+    </a>
+    <div class="nav-tabs">
+      <button class="ntab active" data-page="games" onclick="showPage('games')">🎮 بازی‌ها</button>
+      <button class="ntab" data-page="tools" onclick="showPage('tools')">🔗 اتصال</button>
+      <button class="ntab" data-page="sites" onclick="showPage('sites')">💾 دانلود</button>
+      <button class="ntab" data-page="ts" onclick="showPage('ts')">🎙️ تیم‌اسپیک</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── PAGE: GAMES ── -->
+
+<div class="page active" id="page-games">
+  <div class="sh"><div class="sh-row"><span class="sh-title">🎮 بازی‌ها</span><span class="sh-count" id="gc-count"></span></div><p class="sh-sub">روی هر بازی بزنید تا کانال، دانلود، نصب و اتصال را قدم‌به‌قدم ببینید</p></div>
+  <div class="search-bar"><input type="text" id="search" placeholder="جستجوی بازی..." oninput="filterG()"><span class="si">🔍</span></div>
+  <div class="cats" id="cats">
+    <button class="cb active" onclick="filterCat('all',this)">همه</button>
+    <button class="cb" onclick="filterCat('shooter',this)">🔫 شوتر</button>
+    <button class="cb" onclick="filterCat('strategy',this)">♟️ استراتژی</button>
+    <button class="cb" onclick="filterCat('survival',this)">🌿 بقا</button>
+    <button class="cb" onclick="filterCat('action',this)">⚔️ اکشن</button>
+    <button class="cb" onclick="filterCat('party',this)">🎉 پارتی</button>
+    <button class="cb" onclick="filterCat('sports',this)">⚽ ورزشی</button>
+    <button class="cb" onclick="filterCat('other',this)">🎲 متفرقه</button>
+  </div>
+  <div class="gg" id="gg"></div>
+</div>
+
+<!-- ── PAGE: TOOLS ── -->
+
+<div class="page" id="page-tools">
+  <div class="sh"><div class="sh-row"><span class="sh-title">🔗 ابزارهای اتصال</span></div><p class="sh-sub">برای بازی آنلاین با اینترنت ملی به یکی از این ابزارها نیاز دارید</p></div>
+  <div class="tgrid" id="tgrid"></div>
+</div>
+
+<!-- ── PAGE: SITES ── -->
+
+<div class="page" id="page-sites">
+  <div class="sh"><div class="sh-row"><span class="sh-title">💾 سایت‌های دانلود بازی</span></div><p class="sh-sub">بهترین سایت‌های ایرانی برای دانلود بازی</p></div>
+  <div class="sgrid" id="sgrid"></div>
+</div>
+
+<!-- ── PAGE: TEAMSPEAK ── -->
+
+<div class="page" id="page-ts">
+  <div class="sh"><div class="sh-row"><span class="sh-title">🎙️ سرورهای تیم‌اسپیک</span></div><p class="sh-sub">برای پیدا کردن همبازی به این سرورها وصل شوید — آدرس TeamSpeak را وارد کنید</p></div>
+  <div class="tsgrid" id="tsgrid"></div>
+</div>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+
+<nav class="bnav" id="bnav">
+  <div class="bnav-inner">
+    <button class="bntab active" data-page="games" onclick="showPage('games')">
+      <span class="bni">🎮</span>بازی‌ها
+    </button>
+    <button class="bntab" data-page="tools" onclick="showPage('tools')">
+      <span class="bni">🔗</span>اتصال
+    </button>
+    <button class="bntab" data-page="sites" onclick="showPage('sites')">
+      <span class="bni">💾</span>دانلود
+    </button>
+    <button class="bntab" data-page="ts" onclick="showPage('ts')">
+      <span class="bni">🎙️</span>تیم‌اسپیک
+    </button>
+  </div>
+</nav>
+
+<!-- ── MODAL ── -->
+
+<div id="mo" class="mo" onclick="maybeClose(event)">
+  <div class="mbox" id="mbox">
+    <div class="m-handle" id="mhandle"></div>
+    <button class="mclose" onclick="closeModal()">✕</button>
+    <div class="mhdr">
+      <div id="mcat" class="mcat"></div>
+      <div class="mtitle" id="mtitle"></div>
+      <div class="mdesc" id="mdesc"></div>
+    </div>
+    <div class="mtabs">
+      <button class="mtab active" data-t="bale" onclick="swTab('bale',this)">📱 کانال بله</button>
+      <button class="mtab" data-t="dl" onclick="swTab('dl',this)">⬇️ دانلود</button>
+      <button class="mtab" data-t="inst" onclick="swTab('inst',this)">🔧 نصب</button>
+      <button class="mtab" data-t="conn" onclick="swTab('conn',this)">🌐 اتصال</button>
+    </div>
+    <div class="mbody">
+      <div id="tc-bale" class="tc active"></div>
+      <div id="tc-dl" class="tc"></div>
+      <div id="tc-inst" class="tc"></div>
+      <div id="tc-conn" class="tc"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// CATEGORY MAP
+// ══════════════════════════════════════════════════════════
+const C={
+  shooter:{l:'شوتر',c:'#ef4444',b:'rgba(239,68,68,.1)'},
+  strategy:{l:'استراتژی',c:'#3b82f6',b:'rgba(59,130,246,.1)'},
+  survival:{l:'بقا',c:'#22c55e',b:'rgba(34,197,94,.1)'},
+  action:{l:'اکشن',c:'#a855f7',b:'rgba(168,85,247,.1)'},
+  party:{l:'پارتی',c:'#f97316',b:'rgba(249,115,22,.1)'},
+  sports:{l:'ورزشی',c:'#14b8a6',b:'rgba(20,184,166,.1)'},
+  other:{l:'متفرقه',c:'#94a3b8',b:'rgba(148,163,184,.1)'}
+};
+
+// ══════════════════════════════════════════════════════════
+// GAMES DATA
+// ══════════════════════════════════════════════════════════
+const GAMES=[
+  {id:'bo2',name:'Call of Duty: Black Ops 2',cat:'shooter',icon:'🎯',
+   desc:'مولتی‌پلیر و زامبی از طریق Plutonium و LAN Launcher',
+   bale:[{link:'https://ble.ir/join/6KQDA6ETkr',user:'@codplayersLANfree',label:'گروه CoD LAN'}],
+   dl:{
+     game:[
+       {n:'نسخه FitGirl — لینک مستقیم',url:'https://s3.netpaak.ir/pc/archive/esfand404/COD.Black.Ops.II/FitGirl/'},
+       {n:'نسخه FitGirl — سایت (جایگزین)',url:'https://vgdl.ir/دانلود-بازی-call-of-duty-black-ops-ii-all-dlc-نسخه-fitgirl-corepack-کم-حجم-و-فشر/',note:'در صورت قطع لینک مستقیم'}
+     ],
+     tool:[
+       {n:'Plutonium — لینک مستقیم',url:'https://s33.uupload.ir/files/6ix9ine/Plutonium.rar',note:'موتور آنلاین بازی'},
+       {n:'Plutonium — لینک جایگزین',url:'https://my.uupload.ir/dl/mbAxL0mn'},
+       {n:'LAN Launcher (BO2+BO+MW3+WW)',url:'https://s33.uupload.ir/files/6ix9ine/lan-luncher.zip',note:'نیاز به Plutonium دارد'},
+       {n:'LAN Launcher — جایگزین',url:'https://my.uupload.ir/dl/NdQgYg5Z'},
+       {n:'LAN Launcher جدید (بدون Plutonium)',url:'https://my.files.ir/drive/s/f3jThewaju6Ln0VTutTniC9ApHzyRA',note:'فقط BO2 — همه چیز را خودکار نصب می‌کند'}
+     ],
+     mod:[
+       {n:'ویدیوهای واکترو زامبی BO2',url:'https://my.uupload.ir/dl/6E9Qjy2R'}
+     ]
+   },
+   inst:[
+     {l:'دانلود و نصب بازی',t:'نسخه FitGirl را دانلود و نصب کنید.\n⚠️ قبل از نصب آنتی‌ویروس را خاموش کنید.\nاین نسخه شامل تمام DLC‌هاست.'},
+     {l:'نصب Plutonium',t:'فایل Plutonium را دانلود و در مسیر زیر قرار دهید:',code:'C:\\Users\\{نام_کاربر}\\AppData\\Local'},
+     {l:'قرار دادن LAN Launcher',t:'فایل LAN Launcher را در هر مکانی که خواستید قرار دهید (مسیر خاصی لازم نیست).'},
+     {l:'اجرا',t:'LAN Launcher را اجرا کنید و نسخه مورد نظر بازی را انتخاب کنید.'},
+     {l:'پلاگین زامبی (اختیاری)',t:'برای قابلیت انتقال اسلحه در زامبی، فایل‌های پلاگین را اینجا بگذارید:',code:'C:\\Users\\{نام_کاربر}\\AppData\\Local\\Plutonium\\storage'}
+   ],
+   conn:{
+     tools:[{n:'ElectroLAN',id:'electrolan'},{n:'ZeroTier',id:'zerotier'},{n:'PacketRaft',id:'packetraft'},{n:'SoftEther',id:'softether'}],
+     host:[
+       {t:'ElectroLAN را با Run as Administrator اجرا کنید'},
+       {t:'روی «ساخت شبکه جدید» بزنید، یک نام برای شبکه انتخاب کنید و حداکثر تعداد کاربر را تنظیم کنید'},
+       {t:'نام شبکه را برای دوستانتان بفرستید'},
+       {t:'IP خود را از داخل ElectroLAN کپی کنید — این IP را هم برای دوستان ارسال کنید'},
+       {t:'LAN Launcher را اجرا کنید و بازی را شروع کنید'}
+     ],
+     join:[
+       {t:'ElectroLAN را با Run as Administrator اجرا کنید'},
+       {t:'اسم شبکه هاست را سرچ کنید، پیدا شد روش کلیک کنید تا جوین شوید (اگر پیدا نشد رفرش کنید)'},
+       {t:'LAN Launcher را اجرا کنید'},
+       {t:'در لیست سرورها، نام هاست را پیدا کنید'},
+       {t:'اگر سرور در لیست دیده نشد، کنسول بازی را با ~ باز کنید و IP هاست را وارد کنید:',code:'connect [IP_HOST]'}
+     ],
+     ts:['Bazitory.com','46.38.138.118:9037','212.33.202.12:3080'],
+     warn:'اگر IP در بازی پیدا نشد، در CMD داخل پوشه بازی اجرا کنید: boiii.exe +set net_ip (آی‌پی شما)'
+   }
+  },
+  {id:'bo3',name:'Call of Duty: Black Ops 3',cat:'shooter',icon:'💀',
+   desc:'مولتی‌پلیر، زامبی و Zombies Chronicles — سرور Gold Team',
+   bale:[{link:'https://ble.ir/join/6KQDA6ETkr',user:'@codplayersLANfree',label:'گروه CoD LAN'}],
+   dl:{
+     game:[
+       {n:'مولتی‌پلیر + زامبی ★ پیشنهادی — 37.4 GB',url:'https://edge10.81.ir.cdn.ir/Online/COD/BO3/MPZM',note:'بهترین گزینه'},
+       {n:'نسخه کامل با کمپین — 47.7 GB',url:'https://edge01.81.ir.cdn.ir/Online/COD/BO3/Coop'},
+       {n:'سایت Gold Team',url:'https://gold-team.org/call-of-duty-black-ops-iii'}
+     ],
+     tool:[
+       {n:'لانچر بازی Gold Team',url:'http://dl1.goldgaming.ir/Online/COD/BO3/Launcher/BO3.Launcher%28Gold-Team.Org%29.rar'},
+       {n:'Fast Launch BOIII (رفع مشکل IP و نام)',url:'https://my.uupload.ir/dl/mbA0JQNN',note:'داخل پوشه بازی کپی و اجرا کنید'}
+     ],
+     dlc:[
+       {n:'DLC مپ‌های زامبی — 68.7 GB',url:'https://edge10.81.ir.cdn.ir/Online/COD/BO3/DLC/ZM'},
+       {n:'DLC مپ‌های مولتی‌پلیر — 55.5 GB',url:'https://edge11.81.ir.cdn.ir/Online/COD/BO3/DLC/MP'},
+       {n:'فایل پیش‌نیاز DLC (الزامی برای همه DLC) — 12.6 GB',url:'https://my.uupload.ir/dl/VXN2A17o',note:'بدون این فایل هیچ مپ DLC‌ای اجرا نمی‌شود'},
+       {n:'Nuketown (Multiplayer) — 0.6 GB',url:'https://my.uupload.ir/dl/EOw1QXxj'},
+       {n:'Nacht der Untoten — 1.4 GB',url:'https://my.uupload.ir/dl/1L08Jzm0'},
+       {n:'Kino der Toten — 2.1 GB',url:'https://my.uupload.ir/dl/aGgVrgnw'},
+       {n:'Shangri-La — 2.3 GB',url:'https://my.uupload.ir/dl/VXN2Aw4p'},
+       {n:'Origins (پارت ۱) — 2.0 GB',url:'https://my.uupload.ir/dl/aGgAm4W8'},
+       {n:'Origins (پارت ۲) — 0.8 GB',url:'https://my.uupload.ir/dl/NdQgkvGD'},
+       {n:'Moon (پارت ۱) — 2.0 GB',url:'https://my.uupload.ir/dl/dxvnnGWN'},
+       {n:'Moon (پارت ۲) — 1.4 GB',url:'https://my.uupload.ir/dl/dxvnnrEE'},
+       {n:'Der Eisendrache — 1.3 GB',url:'https://my.uupload.ir/dl/eyxmGR7Q'},
+       {n:'Gorod Krovi — 1.9 GB',url:'https://my.uupload.ir/dl/ODQ2p7p2'},
+       {n:'Revelations — 4.7 GB',url:'https://my.uupload.ir/dl/VXN2AGvY'},
+       {n:'The Giant — 1.2 GB',url:'https://my.uupload.ir/dl/dxvWGY5v'},
+       {n:'Zetsubou No Shima — 1.6 GB',url:'https://my.uupload.ir/dl/mbAyerMj'},
+       {n:'Shadows of Evil — 0.6 GB',url:'https://my.uupload.ir/dl/v9EbeYNE',note:'مپ پیش‌فرض بازی — فقط در صورت نیاز'}
+     ],
+     mod:[
+       {n:'مود All-around Enhancement v2.7.9 (زامبی)',url:'https://my.uupload.ir/dl/NdQgM84a',note:'پوشه mods در داخل پوشه بازی بسازید و فولدر مود را داخلش کپی کنید'},
+       {n:'ویدیوهای واکترو زامبی BO3',url:'https://my.uupload.ir/dl/v9EbeyZb'}
+     ]
+   },
+   inst:[
+     {l:'دانلود بازی',t:'نسخه مولتی+زامبی (37.4 GB) را دانلود کنید — در صورت نیاز به کمپین، نسخه کامل را بگیرید.\n⚠️ آنتی‌ویروس را خاموش کنید.'},
+     {l:'نصب لانچر',t:'فایل لانچر Gold Team را دانلود و داخل پوشه بازی استخراج کنید.\nپوشه boiii داخل لانچر را در مسیر زیر کپی کنید:',code:'C:\\Users\\{نام_کاربر}\\AppData\\Local'},
+     {l:'اجرای کرک',t:'در پوشه بازی، فایل زیر را با Run as Administrator اجرا کنید:',code:'Boii_Bypass_Checks'},
+     {l:'اجرای بازی',t:'فایل boiii.exe را اجرا کنید و Play را بزنید.'},
+     {l:'نصب مپ‌های تکی',t:'فایل مپ را استخراج کنید. پوشه zone (و video اگر بود) را داخل پوشه اصلی بازی کپی و جایگزین کنید.'}
+   ],
+   conn:{
+     tools:[{n:'ElectroLAN',id:'electrolan'},{n:'ZeroTier',id:'zerotier'},{n:'PacketRaft',id:'packetraft'}],
+     host:[
+       {t:'ElectroLAN را با Run as Administrator اجرا کنید'},
+       {t:'شبکه جدید بسازید، نام و IP خود را برای دوستان ارسال کنید'},
+       {t:'BOIII Launcher یا Fast Launch را اجرا کنید'},
+       {t:'بازی را شروع کنید — دوستان باید در لیست دیده شوند'}
+     ],
+     join:[
+       {t:'ElectroLAN را اجرا کرده و به شبکه هاست جوین شوید'},
+       {t:'لانچر بازی را اجرا کنید'},
+       {t:'در لیست سرورها هاست را پیدا کنید'},
+       {t:'اگر دیده نشد، کنسول را با ~ باز کنید و تایپ کنید:',code:'connect [IP_HOST]'}
+     ],
+     ts:['Bazitory.com','46.38.138.118:9037','212.33.202.12:3080']
+   }
+  },
+  {id:'mw19',name:'Call of Duty: Modern Warfare 2019',cat:'shooter',icon:'🪖',
+   desc:'مولتی‌پلیر آنلاین — Pre-Install بدون نیاز به نصب',
+   bale:[{link:'https://ble.ir/join/6KQDA6ETkr',user:'@codplayersLANfree',label:'گروه CoD LAN'}],
+   dl:{
+     game:[
+       {n:'دانلود بازی — لینک مستقیم',url:'https://edge01.81.ir.cdn.ir/Online/COD/MW2019/'},
+       {n:'سایت Gold Team',url:'https://gold-team.org/call-of-duty-modern-warfare-2019/'}
+     ],
+     tool:[
+       {n:'فایل اسکین و نام در بازی',url:'https://my.uupload.ir/dl/v9EbXb56',note:'رفع مشکل نام‌نداشتن و قفل بودن اسکین‌ها'}
+     ]
+   },
+   inst:[
+     {l:'دانلود',t:'بازی را از لینک مستقیم دانلود کنید.'},
+     {l:'استخراج',t:'⚠️ آنتی‌ویروس را قبل از استخراج خاموش کنید.\nاولین پارت را در مسیر دلخواه استخراج کنید.'},
+     {l:'اجرا',t:'بازی Pre-Install است — نیازی به نصب ندارد. از فایل زیر اجرا کنید:',code:'game_dx12_ship_replay.exe'},
+     {l:'رفع مشکل اسم و اسکین',t:'فایل اسکین را دانلود کنید.\nپوشه "Call of Duty Modern Warfare" در Documents را پاک کنید و پوشه هم‌نام از فایل دانلودی را جایگزین کنید.\nبقیه فایل‌ها را داخل پوشه بازی بریزید.\nفایل ZPWZ Localize را اجرا کنید، English را بزنید و اسم بنویسید.'}
+   ],
+   conn:{
+     tools:[{n:'ZeroTier',id:'zerotier'},{n:'SoftEther',id:'softether'}],
+     host:[
+       {t:'ZeroTier را نصب کنید (از bazitory.com) و اولویت شبکه را تنظیم کنید:',code:'کارت ZeroTier → IPv4 → Advanced → Interface Metric = 1\nکارت WiFi/Ethernet → IPv4 → Advanced → Interface Metric = 20'},
+       {t:'بازی را اجرا کنید'},
+       {t:'وارد لابی شوید — دوستانتان در لیست Join باید دیده شوند'},
+       {t:'IP ZeroTier خود را برای دوستان ارسال کنید'}
+     ],
+     join:[
+       {t:'همان تنظیمات ZeroTier (Metric) را انجام دهید'},
+       {t:'بازی را اجرا کنید'},
+       {t:'در لیست Join، نام هاست را پیدا کنید'},
+       {t:'اگر دیده نشد: ۲-۳ دقیقه صبر کنید — یکبار به منوی اصلی برگردید و دوباره وارد لابی شوید'}
+     ],
+     ts:['Bazitory.com','46.38.138.118:9037']
+   }
+  },
+  {id:'mw23',name:'Call of Duty: MWiii (2023)',cat:'shooter',icon:'🔰',
+   desc:'مولتی‌پلیر و زامبی با Local Game و دستور connect',
+   bale:[
+     {link:'https://ble.ir/join/HpXQAB7QZy',label:'کانال اختصاصی MWiii'},
+     {link:'https://ble.ir/join/6KQDA6ETkr',user:'@codplayersLANfree',label:'گروه CoD LAN'}
+   ],
+   dl:{
+     game:[
+       {n:'دانلود نسخه FitGirl (batch / دانلود منیجر)',url:'https://dl5par30dl.musitraf.com/2025/game/Call.of.Duty.Modern.Warfare.III-FitGirl_www.Par30dl.com.part*.rar?src=dl5par30dl'},
+       {n:'سایت دانلود (FitGirl)',url:'https://par30dl.net/call-of-duty-modern-warfare-iii-2023-review-1/'}
+     ],
+     tool:[
+       {n:'کرک V3',url:'https://my.uupload.ir/dl/NdQ8VdVo',note:'بعد از نصب بازی، محتوا را داخل پوشه بازی بریزید'}
+     ]
+   },
+   inst:[
+     {l:'دانلود و نصب',t:'فایل‌های FitGirl را دانلود و نصب کنید.'},
+     {l:'نصب کرک',t:'کرک V3 را دانلود و محتوا را داخل پوشه بازی جایگزین کنید.'},
+     {l:'تغییر نام (اختیاری)',t:'در پوشه بازی فایل configs_user.ini را پیدا کنید و account_name را ویرایش کنید.',code:'Drive:\\MWiii\\steam_settings\\configs_user.ini\nDrive:\\MWiii\\sp23\\steam_settings\\configs_user.ini'},
+     {l:'فعال‌سازی چیت زامبی (اختیاری)',t:'فایل profile.ini_ را جستجو کنید (۳ نتیجه دارد) و مقادیر زیر را اضافه کنید:',code:'sv_cheats=true\nunlockallmissons=true'},
+     {l:'اجرا',t:'مولتی: start_cod23.bat | کمپین: start_sp23.bat'}
+   ],
+   conn:{
+     tools:[{n:'ZeroTier',id:'zerotier'},{n:'ElectroLAN',id:'electrolan'},{n:'SoftEther',id:'softether'}],
+     host:[
+       {t:'ابزار اتصال را اجرا کنید و به شبکه مشترک وصل شوید'},
+       {t:'start_cod23.bat را اجرا کنید'},
+       {t:'Local Game → Create Local Game'},
+       {t:'⚠️ همه اسلحه‌ها را همین جا تنظیم کنید — بعد از Start دیگر نمی‌شود'},
+       {t:'صبر کنید همه وصل شدند، سپس Start بزنید'},
+       {t:'اگر بازیکنان اسلحه‌هایشان را نمی‌بینند: یکبار End Game کنید و دوباره شروع کنید'}
+     ],
+     join:[
+       {t:'ابزار اتصال را اجرا کنید'},
+       {t:'start_cod23.bat را اجرا کنید'},
+       {t:'Local Game → Create Local Game (اسلحه‌ها را تنظیم کنید)'},
+       {t:'Alt+Tab بزنید، پنجره CMD بازی را انتخاب کنید، سپس Ctrl+/ بزنید'},
+       {t:'در خط "enter command" تایپ کنید:',code:'connect [IP_HOST]'},
+       {t:'وارد بازی بشوید — حالا داخل بازی هاست هستید'}
+     ],
+     hostZ:[
+       {t:'⚠️ برای زامبی: Local Game → Ctrl+Z بزنید تا پس‌زمینه قرمز (زامبی مود) فعال شود'},
+       {t:'بعد از تغییر پس‌زمینه، Create Local Game بزنید'},
+       {t:'بدون تغییر هیچ تنظیمی، Start کنید'},
+     ],
+     ts:['Bazitory.com','46.38.138.118:9037']
+   }
+  },
+  {id:'r6',name:'Rainbow Six Siege',cat:'shooter',icon:'🛡️',
+   desc:'نسخه Fenrir — بازی آفلاین با ZeroTier یا ElectroLAN',
+   bale:[{link:'https://ble.ir/join/6Sy86ax6Nv',label:'گروه Rainbow Six',note:'لینک آخرین ورژن داخل گروه است'}],
+   dl:{
+     game:[
+       {n:'نسخه Fenrir (آخرین ورژن) — حدود ۵۰ GB',url:'https://s2.tcnl.ir/Bazitory/ZT/Tom.Clancys.Rainbow.Six.Siege.Operation.Dread.Factor/'}
+     ],
+     tool:[
+       {n:'ZeroTier (ابزار اتصال)',url:'https://my.uupload.ir/dl/6E9gWJL',note:'شامل راهنمای کامل نصب'},
+       {n:'Runtime Pack C++ (رفع ارور dll)',url:'https://soft98.ir/software/programming/15563-vc-redist-installer.html'},
+       {n:'DirectX (رفع ارور DirectX)',url:'https://soft98.ir/software/drivers/366-directx.html'}
+     ]
+   },
+   inst:[
+     {l:'دانلود و استخراج',t:'بازی نیاز به نصب ندارد — فقط فایل را استخراج کنید.'},
+     {l:'اجرا',t:'داخل پوشه بازی، فایل زیر را اجرا کنید.\n⚠️ هیچ دکمه‌ای نزنید تا بازی لانچ شود:',code:'Rainbow6.bat'},
+     {l:'تغییر نام',t:'فایل Uplay_r2.ini در پوشه بازی را باز کنید و Username و Userid را ویرایش کنید.'},
+     {l:'فعال‌سازی DLSS/FSR',t:'Rainbow6.bat را با Notepad باز کنید.\nجای RainbowSix.exe را با RainbowSix_Vulkan.exe عوض کنید.'},
+     {l:'رفع مشکل پردازنده (اگر نصب نمی‌شود)',t:'در System Configuration > Boot، تیک "Number of Processors" را بزنید و عدد ۱۰ بگذارید، Restart کنید.\n⚠️ بعد از نصب این تنظیم را برگردانید!'}
+   ],
+   conn:{
+     tools:[{n:'ZeroTier',id:'zerotier'},{n:'ElectroLAN',id:'electrolan'}],
+     host:[
+       {t:'ZeroTier را نصب کنید (از فایل install داخل پوشه ZeroTier دانلودی)'},
+       {t:'فایل planet را از پوشه replace_dll کپی کرده و در مسیر زیر جایگزین کنید:',code:'C:\\ProgramData\\ZeroTier\\One\\'},
+       {t:'در Task Manager > Services، روی zerotieroneservice راست‌کلیک کنید و Restart بزنید'},
+       {t:'ZeroTier را باز کنید، Join Network بزنید و یک Network ID جدید بسازید (یا از شبکه موجود استفاده کنید)'},
+       {t:'ID شبکه را برای دوستان ارسال کنید'},
+       {t:'Rainbow6.bat را اجرا کنید — منتظر لانچ شدن بمانید'}
+     ],
+     join:[
+       {t:'ZeroTier را اجرا کنید'},
+       {t:'روی Join Network بزنید و Network ID هاست را وارد کنید'},
+       {t:'صبر کنید تا Status شبکه OK شود'},
+       {t:'Rainbow6.bat را اجرا کنید'},
+       {t:'از داخل بازی به سرور هاست وصل شوید'}
+     ],
+     ts:['takts.ir:9933']
+   }
+  },
+  {id:'cs2',name:'Counter-Strike 2 + CS Source',cat:'shooter',icon:'💣',
+   desc:'آنلاین با لانچر MaxGaming — نیاز به Steam و CS2 نصب شده',
+   bale:[{link:'https://ble.ir/join/Fu421YPLiW',user:'@counterr',label:'گروه CS2 و Source'}],
+   dl:{
+     tool:[
+       {n:'MaxGaming Launcher — Windows x64 (پیشنهادی)',url:'https://server.maxgaming.ir/api/server1/assets/MaxGaming.exe',note:'برای اکثر PC/لپ‌تاپ‌ها'},
+       {n:'MaxGaming Launcher — Windows ARM',url:'https://server.maxgaming.ir/api/server1/assets/MaxGamingWinArm.exe'},
+       {n:'MaxGaming Launcher — macOS Apple Silicon',url:'https://server.maxgaming.ir/api/server1/assets/MaxGamingMacArm.dmg'},
+       {n:'MaxGaming Launcher — macOS Intel',url:'https://server.maxgaming.ir/api/server1/assets/MaxGamingMacIntel.dmg'}
+     ],
+     dlc:[
+       {n:'پک آفلاین CS2 (در صورت خطای client out of date)',url:'https://s3.abyss.atlantiscloud.ir/maxgaming/MaxGamingCS2.zip',note:'پسورد: maxgaming.ir — همه ۳۰ پارت را دانلود کنید'}
+     ]
+   },
+   inst:[
+     {l:'پیش‌نیاز',t:'Steam و CS2 باید از قبل نصب باشند.'},
+     {l:'نصب لانچر',t:'MaxGaming Launcher را دانلود و نصب کنید.'},
+     {l:'نسخه سازگار CS2',t:'نسخه فعلی سازگار با سرورهای MaxGaming:',code:'ClientVersion: 2000738 | PatchVersion: 1.41.3.7 (Feb 25 2026)'},
+     {l:'رفع خطای نسخه',t:'اگر خطای client out of date دارید، پک آفلاین را دانلود کنید.\n⚠️ قبل از جایگزینی از پوشه CS2 بکاپ بگیرید.'}
+   ],
+   conn:{
+     tools:[{n:'MaxGaming Launcher',id:'maxgaming'}],
+     host:[
+       {t:'Steam را باز کنید'},
+       {t:'CS2 را باز کنید'},
+       {t:'MaxGaming Launcher را اجرا کنید'},
+       {t:'سرور مورد نظر را انتخاب کنید و Connect را بزنید'},
+       {t:'⚠️ لانچر را در طول بازی باز نگه دارید'}
+     ],
+     join:[
+       {t:'همان مراحل هاست را انجام دهید — هر کاربر باید لانچر را باز نگه دارد'},
+     ],
+     warn:'MaxGaming به اطلاعات اکانت Steam شما دسترسی ندارد. فقط از maxgaming.ir دانلود کنید.'
+   }
+  },
+  {id:'dota2',name:'Dota 2',cat:'other',icon:'⚡',
+   desc:'نسخه آفلاین با پچ آخر — سرور داخلی DotaIran',
+   bale:[],
+   dl:{
+     game:[
+       {n:'دانلود بازی Dota 2 (نسخه 0.40C)',url:'https://s9.uupload.ir/files/kanekimoz/link_dota_2_uj32.txt',note:'آدرس دانلود داخل فایل txt است'},
+       {n:'پچ 0.41',url:'https://dl2.silasdl.ir/silas/game/patch/dota2-patch-7.41.rar'},
+       {n:'SkinChanger برای پچ 0.41',url:'https://dl2.silasdl.ir/silas/game/mods/dota2/SKINS.ONLY.v20260327.zip'}
+     ],
+     tool:[
+       {n:'DotaIran Connect',url:'http://dotairan.eyem.ir/download',note:'ابزار اتصال اصلی برای Dota 2'}
+     ]
+   },
+   inst:[
+     {l:'دانلود و نصب',t:'بازی را دانلود کنید.'},
+     {l:'نصب پچ',t:'پچ 0.41 را داخل مسیر نصب بازی کپی کنید.'},
+     {l:'SkinChanger',t:'اسکین‌چنجر را هم داخل مسیر نصب کپی کنید.\n⚠️ اگر نسخه استیم دارید، روی یک کپی کار کنید.'},
+     {l:'تنظیم شورتکات',t:'روی exe بازی راست‌کلیک، Send To → Desktop.\nروی شورتکات راست‌کلیک، Properties و در Target اضافه کنید:',code:'-enableconsole -console'},
+     {l:'اتصال',t:'DotaIran Connect را اجرا و Connect بزنید.'}
+   ],
+   conn:{
+     tools:[{n:'DotaIran Connect',id:'dotairan'}],
+     host:[
+       {t:'DotaIran Connect را اجرا کنید، روی Connect بزنید و منتظر اتصال بمانید'},
+       {t:'IP نمایش‌داده‌شده را برای دوستانتان بفرستید'},
+       {t:'بازی را با شورتکات اجرا کنید'},
+       {t:'کنسول را با کلید ~ (زیر Esc) باز کنید'},
+       {t:'نوع بازی را انتخاب کنید:',code:'map dota gamemode 1   ← All Pick\nmap dota gamemode 2   ← Captain Mode\nmap dota gamemode 23  ← Turbo'},
+       {t:'دستورات لازم را وارد کنید:',code:'sv_lan 1\nsv_allow_lobby_connect_only 0'}
+     ],
+     join:[
+       {t:'DotaIran Connect را اجرا کنید و Connect بزنید'},
+       {t:'بازی را اجرا کنید'},
+       {t:'کنسول را با ~ باز کنید'},
+       {t:'به IP هاست وصل شوید:',code:'connect [IP_HOST]:27015'},
+       {t:'تیم خود را انتخاب کنید:',code:'jointeam good   ← Radiant\njointeam bad    ← Dire\njointeam spec   ← Spectator'},
+       {t:'تغییر نام:',code:'name YourName'}
+     ],
+     ts:['212.80.8.242:9988']
+   }
+  },
+  {id:'bf3',name:'Battlefield 3',cat:'shooter',icon:'🪨',
+   desc:'سرور ایرانی اختصاصی — اکانت بسازید و مستقیم بازی کنید',
+   bale:[],
+   dl:{
+     game:[{n:'دانلود بازی Battlefield 3',url:'https://my.uupload.ir/f/amin3nator/Battlefield3',note:'آنتی‌ویروس خاموش باشد'}],
+     tool:[{n:'فایل کلاینت (اگر نسخه Steam/Origin دارید)',url:'http://45.81.18.103/download/BF3-Client.zip'}]
+   },
+   inst:[
+     {l:'دانلود',t:'بازی را دانلود و در یک درایو استخراج کنید.\n⚠️ آنتی‌ویروس خاموش باشد.'},
+     {l:'ساخت اکانت',t:'در سایت زیر اکانت بسازید:',code:'http://45.81.18.103/'},
+     {l:'اجرا',t:'فایل BFUlauncher.exe را در پوشه بازی باز کنید.'},
+     {l:'اتصال',t:'وارد سایت شوید، سرور را پیدا کنید و دکمه Play (عکس مپ) را بزنید.'},
+     {l:'بهینه‌سازی',t:'برای کاهش لگ، Anti-aliasing و Post Processing را در تنظیمات بازی خاموش کنید.'}
+   ],
+   conn:{
+     tools:[],
+     host:[{t:'نیازی به ابزار جانبی ندارید — سرور ایرانی اختصاصی وجود دارد'},{t:'اکانت در http://45.81.18.103/ بسازید'},{t:'BFUlauncher.exe را اجرا کنید و سرور را از سایت انتخاب کنید'}],
+     join:[{t:'همان مراحل هاست — همه از سرور مرکزی استفاده می‌کنند'}]
+   }
+  },
+  {id:'bf4',name:'Battlefield 4',cat:'shooter',icon:'🏔️',
+   desc:'سرور ایرانی اختصاصی — مشابه Battlefield 3',
+   bale:[],
+   dl:{
+     game:[{n:'دانلود بازی Battlefield 4',url:'https://my.uupload.ir/f/amin3nator/Battlefield4',note:'رمز: 4delta1.net — آنتی‌ویروس خاموش'}],
+     tool:[{n:'فایل کلاینت (نسخه Steam/Origin)',url:'http://45.81.18.103/download/BF4-Client.zip'}]
+   },
+   inst:[
+     {l:'دانلود و نصب',t:'بازی را دانلود و نصب کنید.\nرمز فایل: 4delta1.net\n⚠️ آنتی‌ویروس خاموش باشد.'},
+     {l:'ساخت اکانت',t:'در سایت زیر اکانت بسازید:',code:'http://45.81.18.105/'},
+     {l:'اجرا',t:'BFUlauncher.exe را باز کنید.'},
+     {l:'اتصال',t:'وارد سایت شوید، سرور را انتخاب و Play بزنید.'},
+     {l:'بهینه‌سازی',t:'Anti-aliasing و Post Processing را خاموش کنید.'}
+   ],
+   conn:{
+     tools:[],
+     host:[{t:'اکانت در http://45.81.18.105/ بسازید'},{t:'BFUlauncher.exe را اجرا کنید'},{t:'سرور را از سایت انتخاب کنید'}],
+     join:[{t:'همان مراحل هاست — سرور مرکزی'}]
+   }
+  },
+  {id:'gzh',name:'C&C Generals: Zero Hour',cat:'strategy',icon:'⚔️',
+   desc:'با لانچر Generals Online و DotaIran Connect',
+   bale:[
+     {link:'https://ble.ir/join/9m6Cn2JHmt',user:'@generalzeroiran',label:'گروه General Zero Hour'},
+     {link:'https://ble.ir/join/5kdMTPJp8L',label:'گروه جنرال با ماد'}
+   ],
+   dl:{
+     game:[{n:'دانلود بازی نسخه DODI',url:'https://par30dl.net/command-conquer-generals-zero-hour-pc-game/'}],
+     tool:[
+       {n:'لانچر Generals Online (رفع هنگ + آنلاین)',url:'https://uupload.ir/view/generalsonline_setup_122025_qfe1_b9h3.rar/',note:'نصب در پوشه Data بازی — general.exe را انتخاب کنید'},
+       {n:'DotaIran Connect',url:'http://dotairan.eyem.ir/download',note:'فایروال باید خاموش باشد'},
+       {n:'TeamSpeak',url:'https://soft98.ir/internet/14948-teamspeak.html'}
+     ]
+   },
+   inst:[
+     {l:'نصب بازی',t:'نسخه DODI را دانلود و نصب کنید.'},
+     {l:'نصب Generals Online',t:'لانچر را دانلود کنید.\n⚠️ مسیر نصب: پوشه Data داخل پوشه بازی\nدر حین نصب general.exe را انتخاب کنید.'},
+     {l:'اجرا',t:'ابتدا لانچر DODI را باز کنید، تیک 1.06 را بزنید و ببندید.\nسپس Generals Online را باز کنید و بازی را اجرا کنید.'}
+   ],
+   conn:{
+     tools:[{n:'DotaIran Connect',id:'dotairan'}],
+     host:[
+       {t:'فایروال ویندوز را خاموش کنید'},
+       {t:'DotaIran Connect را اجرا کنید و روی Connect بزنید'},
+       {t:'IP دریافت‌شده را برای دوستانتان بفرستید'},
+       {t:'بازی را از لانچر Generals Online اجرا کنید'},
+       {t:'در بازی: Multiplayer → Network → DirectConnect → Create (Host)'},
+       {t:'در بخش Host IP، IP خود را وارد کنید و بازی را ایجاد کنید'}
+     ],
+     join:[
+       {t:'فایروال را خاموش کنید'},
+       {t:'DotaIran Connect را اجرا و Connect بزنید'},
+       {t:'بازی را از لانچر اجرا کنید'},
+       {t:'Multiplayer → Network → DirectConnect → Join'},
+       {t:'IP هاست را وارد کنید و Connect بزنید'}
+     ],
+     ts:['Ts77.IR:10533'],
+     video:{l:'ویدیو آموزش کامل (آپارات)',url:'https://www.aparat.com/v/eoao48c'}
+   }
+  },
+  {id:'mc',name:'Minecraft',cat:'survival',icon:'⛏️',
+   desc:'کلاینت‌های ایرانی Phoenix و Cold — سرورهای داخلی',
+   bale:[
+     {link:'https://ble.ir/join/5ELyuxGmhh',user:'@group_minecraft',label:'گروه Minecraft'},
+     {link:'https://ble.ir/join/4y5CCqrcrB',label:'گروه Minecraft SMP'}
+   ],
+   dl:{tool:[
+     {n:'Phoenix Client (کلاینت ایرانی)',url:'https://phoenixclient.ir/fa'},
+     {n:'Cold Launcher (کلاینت ایرانی)',url:'https://coldgame.ir/launcher'}
+   ]},
+   inst:[{l:'نصب کلاینت',t:'یکی از کلاینت‌های ایرانی را از لینک‌های بالا دانلود و نصب کنید.'},{l:'اتصال',t:'سرور داخلی موردنظر را در کلاینت وارد کنید.'}],
+   conn:{tools:[{n:'Phoenix Client',id:'none'},{n:'Cold Launcher',id:'none'}],host:[{t:'کلاینت ایرانی را نصب کنید'},{t:'Multiplayer → Add Server → آدرس سرور را وارد کنید'},{t:'یا از Open to LAN برای بازی با دوستان در شبکه محلی استفاده کنید'}],join:[{t:'کلاینت را نصب کنید'},{t:'Multiplayer → آدرس سرور یا IP هاست را وارد کنید'}]}
+  },
+  {id:'terraria',name:'Terraria',cat:'survival',icon:'🌙',
+   desc:'LAN با دوستان — ZeroTier یا PacketRaft',
+   bale:[{link:'https://ble.ir/join/HfE4P8ANxE',user:'@terraria_calamity',label:'گروه Terraria'}],
+   dl:{},inst:[{l:'اتصال',t:'ZeroTier را از bazitory.com نصب کنید.'}],
+   conn:{tools:[{n:'ZeroTier',id:'zerotier'},{n:'PacketRaft',id:'packetraft'}],host:[{t:'ZeroTier را نصب و وصل کنید'},{t:'بازی را اجرا کنید → Multiplayer → Host & Play'}],join:[{t:'ZeroTier را نصب و به شبکه هاست جوین شوید'},{t:'Multiplayer → Join via IP → IP هاست را وارد کنید'}]}
+  },
+  {id:'dst',name:"Don't Starve Together",cat:'survival',icon:'🕯️',
+   desc:'LAN با ZeroTier',
+   bale:[{link:'https://ble.ir/join/GzkF8K23Q2',user:'@Dontstarveplayers',label:"گروه Don't Starve"}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier را نصب و وصل کنید'},{t:'بازی را اجرا کنید → Host Game'}],join:[{t:'ZeroTier را نصب و به شبکه هاست جوین شوید'},{t:'بازی را اجرا کنید → Browse Games'}]}
+  },
+  {id:'hoi4',name:'Hearts of Iron IV',cat:'strategy',icon:'🗺️',
+   desc:'استراتژی جنگ جهانی — LAN با ZeroTier از بازیطوری',
+   bale:[{link:'https://ble.ir/join/6DgX7mXHfS',user:'@hoi4_iran',label:'گروه HoI4'}],
+   dl:{tool:[{n:'ZeroTier + آموزش',url:'https://bazitory.com/',note:'از سایت بازیطوری دانلود کنید'}]},
+   inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier را از bazitory.com دانلود و نصب کنید'},{t:'شبکه بسازید و ID را برای دوستان بفرستید'},{t:'بازی → Multiplayer → Host Game'}],join:[{t:'ZeroTier را نصب و به شبکه هاست وصل شوید'},{t:'بازی → Multiplayer → Join Game → IP هاست را وارد کنید'}]}
+  },
+  {id:'stronghold',name:'Stronghold',cat:'strategy',icon:'🏰',
+   desc:'تمام ورژن‌ها — LAN با ZeroTier یا PacketRaft',
+   bale:[{link:'https://ble.ir/join/6Qjs8PMt8W',user:'@stronghold000',label:'گروه Stronghold'}],
+   dl:{},inst:[{l:'نکته',t:'اگر بعد از اتصال کرش می‌کند: در تنظیمات Network به صورت دستی Gateway را روی IP هاست تنظیم کنید.'}],
+   conn:{tools:[{n:'ZeroTier',id:'zerotier'},{n:'PacketRaft',id:'packetraft'}],host:[{t:'ZeroTier را نصب و شبکه بسازید'},{t:'بازی را اجرا کنید → Multiplayer → Host'}],join:[{t:'ZeroTier را نصب و جوین شوید'},{t:'اگر کرش کرد: Network settings → Gateway = IP هاست'},{t:'بازی → Multiplayer → Join → IP هاست'}]}
+  },
+  {id:'civ6',name:'Civilization VI',cat:'strategy',icon:'🌍',
+   desc:'LAN با ZeroTier یا PacketRaft',
+   bale:[{link:'https://ble.ir/join/DRrBdbs2ZP',user:'@Civ6VI',label:'گروه Civ 6'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید و شبکه بسازید'},{t:'بازی → Multiplayer → Local Network → Create'}],join:[{t:'ZeroTier نصب کنید و جوین شوید'},{t:'بازی → Multiplayer → Local Network → Join'}]}
+  },
+  {id:'factorio',name:'Factorio',cat:'survival',icon:'🏭',
+   desc:'LAN با ZeroTier',
+   bale:[{link:'https://ble.ir/join/HfGzFxG1T5',user:'@Factorioiran',label:'گروه Factorio'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Multiplayer → Start New Game'}],join:[{t:'ZeroTier نصب کنید و جوین شوید'},{t:'بازی → Multiplayer → Connect to Address → IP هاست'}]}
+  },
+  {id:'repo',name:'REPO',cat:'action',icon:'👾',
+   desc:'آنلاین با اینترنت ملی — جمع‌آوری آشغال در دنیای ترسناک',
+   bale:[{link:'https://ble.ir/join/Ak1Tgp482t',user:'@REPO_Net_Meli',label:'گروه REPO'},{link:'',user:'@repo_archive',label:'آرشیو REPO'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'},{n:'PacketRaft',id:'packetraft'}],host:[{t:'ZeroTier نصب و وصل کنید'},{t:'بازی → Host Game'}],join:[{t:'ZeroTier نصب و جوین شوید'},{t:'بازی → Join Game'}]}
+  },
+  {id:'ror2',name:'Risk of Rain 2',cat:'action',icon:'🌧️',
+   desc:'LAN با ZeroTier — از منوی کنسول',
+   bale:[{link:'https://ble.ir/join/2vasKSChsJ',user:'@ror2lfg',label:'گروه Risk of Rain 2'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Play → Host → Private Game'}],join:[{t:'ZeroTier نصب و جوین شوید'},{t:'بازی → Play → Join → IP هاست را وارد کنید'}]}
+  },
+  {id:'gmod',name:"Garry's Mod",cat:'action',icon:'🔩',
+   desc:'LAN با ZeroTier یا PacketRaft',
+   bale:[{link:'https://ble.ir/join/6vcXCdkJCo',user:'@garrymod',label:"گروه Gmod"}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Create Server → LAN'}],join:[{t:'ZeroTier نصب کنید'},{t:'بازی → Join a Game → IP هاست'}]}
+  },
+  {id:'nightreign',name:'Elden Ring: Nightreign',cat:'action',icon:'🌑',
+   desc:'LAN با ZeroTier',
+   bale:[{link:'https://ble.ir/join/6PMPJHWnm8',user:'@EldenReign',label:'گروه Nightreign'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب و شبکه بسازید'},{t:'بازی را اجرا و لانچ کنید'}],join:[{t:'ZeroTier نصب و جوین شوید'},{t:'بازی را اجرا کنید'}]}
+  },
+  {id:'nuclear',name:'Nuclear Option',cat:'action',icon:'🚀',
+   desc:'شبیه‌ساز جنگ هوایی — LAN با ZeroTier',
+   bale:[{link:'https://ble.ir/join/4CKVGf3sfT',user:'@nuclan',label:'گروه Nuclear Option'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Multiplayer → Host'}],join:[{t:'ZeroTier نصب و جوین شوید'},{t:'بازی → Multiplayer → Connect'}]}
+  },
+  {id:'among',name:'Among Us',cat:'party',icon:'🪐',
+   desc:'بازی جاسوس با دوستان',
+   bale:[{link:'https://ble.ir/join/G3KDNbSYmU',label:'گروه Among Us'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Local → Host → بازی را شروع کنید'}],join:[{t:'ZeroTier نصب و جوین شوید'},{t:'بازی → Online → Enter Code → کد اتاق هاست را بزنید'}]}
+  },
+  {id:'ph2',name:'Perfect Heist 2',cat:'party',icon:'💰',
+   desc:'دزدی آنلاین با دوستان',
+   bale:[{link:'https://ble.ir/join/5t4NZFWGgC',user:'@Perfectdozd2',label:'گروه Perfect Heist 2'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Host Game'}],join:[{t:'ZeroTier نصب کنید'},{t:'بازی → Join Game'}]}
+  },
+  {id:'crab',name:'Crab Game',cat:'party',icon:'🦀',
+   desc:'بازی‌های پارتی با دوستان',
+   bale:[{link:'https://ble.ir/join/3zjkrKq7uQ',user:'@CrabGame_gp',label:'گروه Crab Game'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Host → یک اتاق بسازید'}],join:[{t:'ZeroTier نصب کنید'},{t:'بازی → Join → IP هاست را وارد کنید'}]}
+  },
+  {id:'lockdown',name:'Lockdown Protocol',cat:'party',icon:'🔒',
+   desc:'پنهان شو و فرار کن',
+   bale:[{link:'https://ble.ir/LOCKDp',user:'@LOCKDp',label:'گروه Lockdown Protocol'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی را اجرا کنید و هاست شوید'}],join:[{t:'ZeroTier نصب و جوین شوید'}]}
+  },
+  {id:'buckshot',name:'Buckshot Roulette',cat:'party',icon:'🎲',
+   desc:'روله روسی با اسلحه‌های واقعی',
+   bale:[{link:'https://ble.ir/join/2HYq9weq5P',label:'گروه Buckshot Roulette'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Multiplayer → Host'}],join:[{t:'ZeroTier نصب کنید'},{t:'بازی → Multiplayer → Join'}]}
+  },
+  {id:'schedule',name:'Schedule 1',cat:'other',icon:'📦',
+   desc:'شبیه‌ساز مواد مخدر — LAN با دوستان',
+   bale:[{link:'https://ble.ir/join/BF4omyc7wL',user:'@SchedulEI',label:'گروه Schedule 1'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Host Session'}],join:[{t:'ZeroTier نصب کنید'},{t:'بازی → Join Session'}]}
+  },
+  {id:'bodycam',name:'BodyCam',cat:'shooter',icon:'📷',
+   desc:'شوتر واقعی‌نما با دوربین دوم شخص',
+   bale:[{link:'https://ble.ir/join/UnMQFLBJMD',user:'@bodycam_ir',label:'گروه BodyCam'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Host'}],join:[{t:'ZeroTier نصب و جوین شوید'},{t:'بازی → Join'}]}
+  },
+  {id:'fifa',name:'FIFA / PES',cat:'sports',icon:'⚽',
+   desc:'فوتبال آنلاین از طریق گروه روبیکا',
+   bale:[{link:'https://rubika.ir/joing/BAAAFJHHE0DCYDGPQIXFPDTSJEBBMIIT/',label:'گروه FIFA/PES (روبیکا)',note:'لینک در روبیکا باز می‌شود'}],
+   dl:{},inst:[],conn:{tools:[{n:'ZeroTier',id:'zerotier'}],host:[{t:'ZeroTier نصب کنید'},{t:'بازی → Play a Friend → Host'}],join:[{t:'ZeroTier نصب کنید'},{t:'بازی → Play a Friend → Join → IP هاست'}]}
+  }
+];
+
+// ══════════════════════════════════════════════════════════
+// TOOLS DATA
+// ══════════════════════════════════════════════════════════
+const TOOLS=[
+  {id:'zerotier',icon:'🔗',name:'ZeroTier',type:'LAN مجازی',
+   desc:'قدرتمندترین و پرکاربردترین ابزار LAN. سایت بازیطوری نسخه تنظیم‌شده با سرورهای ایرانی را ارائه می‌دهد.',
+   links:[{l:'دانلود از بازیطوری',u:'https://bazitory.com/zerotier',main:true},{l:'آموزش ویدیویی',u:'https://www.aparat.com/v/mrpoo8v?t=1443'}]},
+  {id:'packetraft',icon:'📡',name:'PacketRaft',type:'LAN مجازی',
+   desc:'ابزار ایرانی برای LAN بازی — سرعت و پایداری خوب.',
+   links:[{l:'سایت رسمی',u:'https://packetraft.ir/',main:true}]},
+  {id:'dotairan',icon:'🌐',name:'DotaIran Connect',type:'LAN مجازی',
+   desc:'ابزار اجتماع دوتا ایران — رفع مشکلات پکت رفت، برای اکثر بازی‌ها کاربرد دارد.',
+   links:[{l:'دانلود',u:'http://dotairan.eyem.ir/download',main:true},{l:'آموزش',u:'https://www.aparat.com/v/jvd5e7e'}]},
+  {id:'electrolan',icon:'⚡',name:'ElectroLAN',type:'LAN مجازی',
+   desc:'جایگزین رایگان SoftEther — ساده و کاملاً رایگان، ایده‌آل برای Rainbow Six و اکثر بازی‌ها.',
+   links:[{l:'دانلود',u:'https://electrotm.org',main:true}]},
+  {id:'softether',icon:'🛡️',name:'SoftEther',type:'VPN / LAN',
+   desc:'VPN با کانفیگ‌های آماده — کانفیگ‌ها در کانال‌های بله آپدیت می‌شوند.',
+   links:[{l:'دانلود (با کانفیگ)',u:'https://s33.uupload.ir/files/6ix9ine/softether.exe',main:true},{l:'آموزش',u:'https://www.aparat.com/v/p702pb8'}]},
+  {id:'fundota',icon:'🤖',name:'FunDota',type:'LAN مجازی',
+   desc:'ابزار جدید، مشابه DotaIran Connect — برای همه بازی‌ها قابل استفاده است.',
+   links:[{l:'دانلود',u:'https://fundota.ir/fundota.exe',main:true},{l:'سایت',u:'https://fundota.ir'}]},
+  {id:'goldberg',icon:'🏆',name:'Goldberg Emulator',type:'Steam Emulator',
+   desc:'شبیه‌ساز مولتی‌پلیر استیم — برای LAN بازی کردن بازی‌های Steam بدون سرور آنلاین.',
+   links:[{l:'Bazitory GSE Automation (پیشنهادی)',u:'https://s9.uupload.ir/files/aminvfx/GOLDBERG%20VIDEO/Goldberg%20Stuff/Bazitory%20GSE%20Automation/Bazitory%20GSE%20Automation_1.0.2_x64_en-US.msi',main:true},{l:'نسخه ساده',u:'https://my.uupload.ir/dl/eyxQ5Y2M'},{l:'آموزش',u:'https://www.aparat.com/v/mrpoo8v?t=111'}]},
+  {id:'maxgaming',icon:'🎮',name:'MaxGaming',type:'CS2 Launcher',
+   desc:'لانچر اختصاصی CS2 ایرانی — اتصال آسان بدون تنظیمات پیچیده.',
+   links:[{l:'سایت و دانلود',u:'https://maxgaming.ir/fa/launcher',main:true}]}
+];
+
+const SITES=[
+  {n:'پایرت گیمز',url:'https://pirategames.ir',tag:'دانلود بازی'},
+  {n:'گلد تیم',url:'https://gold-team.org',tag:'دانلود بازی'},
+  {n:'دانلود ها',url:'https://downloadha.com',tag:'دانلود بازی'},
+  {n:'پار30 دانلود',url:'https://par30dl.net',tag:'دانلود بازی'},
+  {n:'VGDL',url:'https://vgdl.ir',tag:'دانلود بازی'},
+  {n:'بازیطوری',url:'https://bazitory.com',tag:'آموزش + LAN'},
+  {n:'Strategic Club',url:'https://strategicclub.ir/lan-games-internet-shutdown/',tag:'آموزش LAN'},
+  {n:'MaxGaming',url:'https://maxgaming.ir',tag:'CS2 آنلاین'},
+  {n:'سایان CS',url:'https://sayancs.ir',tag:'CS آنلاین'},
+  {n:'Soft98',url:'https://soft98.ir',tag:'نرم‌افزار'}
+];
+
+const TS_SERVERS=[
+  {n:'بازیطوری',tags:['CoD','عمومی'],addrs:['Bazitory.com','46.38.138.118:9037']},
+  {n:'Biu Bazi Koonim',tags:['CoD'],addrs:['212.33.202.12:3080']},
+  {n:'Rainbow Six',tags:['R6 Siege'],addrs:['takts.ir:9933']},
+  {n:'General Zero Hour',tags:['Zero Hour'],addrs:['Ts77.IR:10533']},
+  {n:'Dota 2',tags:['Dota 2'],addrs:['212.80.8.242:9988']}
+];
+
+// ══════════════════════════════════════════════════════════
+// PAGE NAV
+// ══════════════════════════════════════════════════════════
+function showPage(p){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.bntab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const dt=document.querySelector(`.ntab[data-page="${p}"]`);if(dt)dt.classList.add('active');
+  const mb=document.querySelector(`.bntab[data-page="${p}"]`);if(mb)mb.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goToTool(id){
+  closeModal();
+  showPage('tools');
+  setTimeout(()=>{
+    const el=document.getElementById('tc-'+id);
+    if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),1200);}
+  },120);
+}
+
+// ══════════════════════════════════════════════════════════
+// GAMES RENDER
+// ══════════════════════════════════════════════════════════
+let activeCat='all', activeSearch='';
+
+function hasData(g){return g.dl&&(g.dl.game?.length||g.dl.tool?.length)&&g.inst&&g.inst.length>0}
+
+function renderGames(){
+  const grid=document.getElementById('gg');
+  const filtered=GAMES.filter(g=>{
+    const mc=activeCat==='all'||g.cat===activeCat;
+    const ms=!activeSearch||g.name.toLowerCase().includes(activeSearch)||g.desc.includes(activeSearch);
+    return mc&&ms;
+  });
+  document.getElementById('gc-count').textContent=filtered.length+' بازی';
+  if(!filtered.length){grid.innerHTML='<div class="no-results">هیچ بازی‌ای یافت نشد 😔</div>';return;}
+  grid.innerHTML=filtered.map(g=>{
+    const cat=C[g.cat]||C.other;
+    const hd=hasData(g);
+    return `<div class="gc${hd?' hasdata':''}" style="--cat-c:${cat.c};--cat-bg:${cat.b}" onclick="openGame('${g.id}')">
+      <div class="gc-head">
+        <div class="gc-top"><span class="gc-icon">${g.icon}</span><span class="gc-badge">${cat.l}</span></div>
+        <div class="gc-name">${g.name}</div>
+        ${hd?'<div class="gc-dot" title="اطلاعات دانلود و نصب موجود است"></div>':''}
+      </div>
+      <div class="gc-body"><div class="gc-desc">${g.desc}</div></div>
+      <div class="gc-foot">
+        <button class="gc-btn">مشاهده</button>
+        ${g.bale.length&&g.bale[0].link?`<a class="gc-bale" href="${g.bale[0].link.startsWith('http')?g.bale[0].link:'https://'+g.bale[0].link}" target="_blank" onclick="event.stopPropagation()">📱 بله</a>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCat(cat,btn){
+  activeCat=cat;
+  document.querySelectorAll('.cb').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderGames();
+}
+function filterG(){activeSearch=document.getElementById('search').value.toLowerCase();renderGames();}
+
+// ══════════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════════
+function closeModal(){
+  const mbox=document.getElementById('mbox');
+  mbox.style.transform='';
+  document.getElementById('mo').classList.remove('open');
+  document.body.style.overflow='';
+}
+function maybeClose(e){if(e.target===document.getElementById('mo'))closeModal();}
+function swTab(t,btn){
+  document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.mtab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tc-'+t).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // scroll modal body to top on tab switch
+  const mb=document.querySelector('.mbody');if(mb)mb.scrollTop=0;
+}
+
+function buildBale(g){
+  const el=document.getElementById('tc-bale');
+  if(!g.bale.length){el.innerHTML='<div class="nodl" style="text-align:center">کانال بله برای این بازی ثبت نشده است</div>';return;}
+  el.innerHTML=g.bale.map(b=>`<div class="bcard"><h4>📱 ${b.label||'کانال بله'}</h4>${b.note?`<p style="font-size:12px;color:var(--tm);margin-bottom:8px">${b.note}</p>`:''}<div class="brow">${b.link?`<a class="bbtn" href="${b.link.startsWith('http')?b.link:'https://'+b.link}" target="_blank">🔗 ورود به کانال</a>`:''} ${b.user?`<span class="buser">یوزرنیم: <b>${b.user}</b></span>`:''}</div></div>`).join('');
+}
+
+function buildDl(g){
+  const el=document.getElementById('tc-dl');
+  const dl=g.dl||{};
+  const grps=[
+    {k:'game',ic:'🎮',l:'فایل اصلی بازی',bc:'game'},
+    {k:'tool',ic:'🔧',l:'ابزار و لانچر',bc:'tool'},
+    {k:'dlc',ic:'📦',l:'DLC، مپ و محتوای اضافی',bc:'dlc'},
+    {k:'mod',ic:'🎨',l:'مود',bc:'mod'}
+  ];
+  let html='';
+  grps.forEach(grp=>{
+    const items=dl[grp.k];
+    if(!items||!items.length)return;
+    html+=`<div class="dlg"><div class="dglabel">${grp.ic} ${grp.l}</div>${items.map(item=>`<div class="ditem"><div class="dinfo"><div class="dname">${item.n}</div>${item.note?`<div class="dnote">💡 ${item.note}</div>`:''}</div>${item.url?`<a class="dbtn ${grp.bc}" href="${item.url}" target="_blank">⬇️ دانلود</a>`:''}</div>`).join('')}</div>`;
+  });
+  el.innerHTML=html||'<div class="nodl">لینک دانلود مستقیم موجود نیست — برای دریافت لینک به کانال بله مراجعه کنید</div>';
+}
+
+function buildInst(g){
+  const el=document.getElementById('tc-inst');
+  if(!g.inst||!g.inst.length){el.innerHTML=`<div class="nodl">آموزش نصب خاصی ثبت نشده — برای اطلاعات بیشتر به <a href="https://bazitory.com" target="_blank" style="color:var(--accent)">bazitory.com</a> یا کانال بله مراجعه کنید</div>`;return;}
+  el.innerHTML=`<ul class="isteps">${g.inst.map((s,i)=>`<li class="istep"><div class="isn">${i+1}</div><div class="isb"><div class="islabel">${s.l}</div><div class="istext">${s.t}</div>${s.code?`<code class="icode">${s.code}</code>`:''}</div></li>`).join('')}</ul>`;
+}
+
+function buildConn(g){
+  const el=document.getElementById('tc-conn');
+  const c=g.conn;if(!c){el.innerHTML='<div class="nodl">اطلاعات اتصال موجود نیست</div>';return;}
+  let html='';
+  if(c.tools&&c.tools.length){
+    html+=`<div class="ctools">${c.tools.map(t=>t.id&&t.id!=='none'?`<button class="ctbadge" onclick="goToTool('${t.id}')">🔗 ${t.n} ↗</button>`:`<span class="ctbadge" style="cursor:default">🔗 ${t.n}</span>`).join('')}</div>`;
+    html+=`<p style="font-size:12px;color:var(--tm);margin-bottom:14px">برای دانلود و آموزش هر ابزار روی آن کلیک کنید</p>`;
+  }
+  if(c.warn)html+=`<div class="cwarn"><b>⚠️ توجه:</b> ${c.warn}</div>`;
+  if(c.host&&c.host.length){
+    html+=`<div class="cmode"><div class="cmode-title host">🟢 راه‌اندازی بازی — HOST</div><ul class="csteps">${c.host.map((s,i)=>`<li class="cstep"><div class="csn">${i+1}</div><div>${s.t}${s.code?`<code class="ccode">${s.code}</code>`:''}</div></li>`).join('')}</ul></div>`;
+  }
+  if(c.hostZ&&c.hostZ.length){
+    html+=`<div class="cmode"><div class="cmode-title host">🟢 راه‌اندازی زامبی — HOST</div><ul class="csteps">${c.hostZ.map((s,i)=>`<li class="cstep"><div class="csn">${i+1}</div><div>${s.t}${s.code?`<code class="ccode">${s.code}</code>`:''}</div></li>`).join('')}</ul></div>`;
+  }
+  if(c.join&&c.join.length){
+    html+=`<div class="cmode"><div class="cmode-title join">🟣 پیوستن به بازی — PLAYER</div><ul class="csteps">${c.join.map((s,i)=>`<li class="cstep"><div class="csn">${i+1}</div><div>${s.t}${s.code?`<code class="ccode">${s.code}</code>`:''}</div></li>`).join('')}</ul></div>`;
+  }
+  if(c.ts&&c.ts.length){html+=`<div class="ctsbox"><h5>🎙️ سرور تیم‌اسپیک — پیدا کردن همبازی</h5>${c.ts.map(a=>`<span class="ctsaddr">${a}</span>`).join('')}</div>`;}
+  if(c.video)html+=`<a class="cvideo" href="${c.video.url}" target="_blank">🎬 ${c.video.l}</a>`;
+  el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════════════════════
+// TOOLS, SITES, TS RENDER
+// ══════════════════════════════════════════════════════════
+function renderTools(){
+  document.getElementById('tgrid').innerHTML=TOOLS.map(t=>`
+    <div class="tcard" id="tc-${t.id}">
+      <div class="tchead"><span class="tcicon">${t.icon}</span><div><div class="tcname">${t.name}</div><span class="tctype">${t.type}</span></div></div>
+      <div class="tcdesc">${t.desc}</div>
+      <div class="tclinks">${t.links.map(l=>`<a class="tclink${l.main?' main':''}" href="${l.u}" target="_blank">${l.l}</a>`).join('')}</div>
+    </div>`).join('');
+}
+
+function renderSites(){
+  document.getElementById('sgrid').innerHTML=SITES.map(s=>`
+    <a class="scard" href="${s.url}" target="_blank">
+      <div class="sname">${s.n}</div>
+      <div class="surl">${s.url.replace('https://','').replace('http://','')}</div>
+      <div class="stag">${s.tag}</div>
+    </a>`).join('');
+}
+
+function renderTS(){
+  document.getElementById('tsgrid').innerHTML=TS_SERVERS.map(s=>`
+    <div class="tscard">
+      <div class="tsname">🎙️ ${s.n} ${s.tags.map(t=>`<span class="tstag">${t}</span>`).join('')}</div>
+      <ul class="tsaddrs">${s.addrs.map(a=>`<li>${a}</li>`).join('')}</ul>
+      <button class="copybtn" onclick="cp('${s.addrs[0]}',this)">📋 کپی آدرس</button>
+    </div>`).join('');
+}
+
+function cp(addr,btn){
+  navigator.clipboard.writeText(addr).then(()=>{btn.textContent='✅ کپی شد!';setTimeout(()=>btn.textContent='📋 کپی آدرس',2000);}).catch(()=>{});
+}
+
+// ── INIT ──
+renderGames(); renderTools(); renderSites(); renderTS();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// ── SWIPE TO CLOSE MODAL (mobile) ──
+(function(){
+  const handle=document.getElementById('mhandle');
+  const mbox=document.getElementById('mbox');
+  let sy=0,dy=0,dragging=false;
+  function onStart(e){
+    const t=e.touches?e.touches[0]:e;
+    sy=t.clientY;dy=0;dragging=true;
+    mbox.style.transition='none';
+  }
+  function onMove(e){
+    if(!dragging)return;
+    const t=e.touches?e.touches[0]:e;
+    dy=Math.max(0,t.clientY-sy);
+    mbox.style.transform=`translateY(${dy}px)`;
+    if(dy>10)e.preventDefault();
+  }
+  function onEnd(){
+    if(!dragging)return;
+    dragging=false;
+    mbox.style.transition='';
+    if(dy>80){closeModal();}
+    else{mbox.style.transform='';}
+    dy=0;
+  }
+  // Attach to handle and modal header
+  [handle,document.getElementById('mbox')].forEach(el=>{
+    if(!el)return;
+    el.addEventListener('touchstart',onStart,{passive:true});
+    el.addEventListener('touchmove',onMove,{passive:false});
+    el.addEventListener('touchend',onEnd);
+  });
+})();
+
+// ── PREVENT BODY SCROLL WHEN MODAL OPEN ──
+function openGame(id){
+  const g=GAMES.find(x=>x.id===id);if(!g)return;
+  const cat=C[g.cat]||C.other;
+  document.getElementById('mcat').innerHTML=`<span style="background:${cat.b};color:${cat.c};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800">${cat.l}</span>`;
+  document.getElementById('mtitle').textContent=g.name;
+  document.getElementById('mdesc').textContent=g.desc;
+  buildBale(g);buildDl(g);buildInst(g);buildConn(g);
+  swTab('bale',document.querySelector('.mtab[data-t="bale"]'));
+  document.getElementById('mo').classList.add('open');
+  document.body.style.overflow='hidden';
+  // Scroll modal body to top
+  const mb=document.querySelector('.mbody');if(mb)mb.scrollTop=0;
+}
+</script>
+
+</body>
+</html>
